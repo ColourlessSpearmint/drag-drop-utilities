@@ -28,16 +28,27 @@ def center_crop_to_square(image_path):
     except Exception as e:
         print(f"Error processing {image_path}: {e}")
 
+def process_directory(directory_path):
+    """Recursively process all image files in a directory."""
+    for root, _, files in os.walk(directory_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            if os.path.isfile(file_path):
+                center_crop_to_square(file_path)
+
 def main(file_paths):
     for file_path in file_paths:
         if os.path.isfile(file_path):
             center_crop_to_square(file_path)
+        elif os.path.isdir(file_path):
+            print(f"Processing folder: {file_path}")
+            process_directory(file_path)
         else:
-            print(f"Skipping non-file: {file_path}")
+            print(f"Skipping: {file_path} (not a file or folder)")
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        print("Processing files... Drag and drop multiple files to batch process.")
+        print("Processing files and folders... Drag and drop multiple files or folders to batch process.")
         main(sys.argv[1:])
     else:
-        print("No images provided. Drag and drop files onto the batch script.")
+        print("No files or folders provided. Drag and drop files or folders onto the batch script.")
