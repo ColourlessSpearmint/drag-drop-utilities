@@ -1,3 +1,3 @@
 @echo off
-python center_crop_square.py %*
-pause
+cd /d %~dp0
+python crop_center_square.py %*
